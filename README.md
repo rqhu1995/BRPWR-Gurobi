@@ -35,14 +35,20 @@ The strucutre of the project is given as follows:
 .
 ├── main.py
 ├── model
+│   ├── __init__.py
+│   ├── callback.py
 │   ├── constraints.py
 │   ├── model.py
 │   ├── objective.py
 │   └── variables.py
 ├── parameters
+│   ├── __init__.py
 │   ├── config.py
 │   ├── dataloader.py
 │   └── sets.py
+├── resources
+│   ├── datasets
+│   └── solutions
 ├── scripts
 └── utils
     └── utils.py
@@ -54,12 +60,12 @@ The external resources include the dataset and solutions are put in the folder `
 
 ### Data Specification
 
-The folders `X_Y` provide data for different sizes (`X` stations). `Y` here is the instance number. Here we only have `Y=1`. In case more instances are generated, `Y` can be increased. Inside each folder `X_Y`, we have:
+The folders `X_Y` provide data for different sizes (`X` stations). `Y` here is the instance number. Inside each folder `X_Y`, we have:
 
-- `dissat_table_i.txt (i=1,2,...X)`: These are the extended user dissatisfaction table calculated with a size of $C_i \times C_i$, where $C_i$ is capacity of station $i$. The row index $p$ is the number of usable bikes, and the column index $b$ is the number of broken bikes at station $i$. For table cells $(p,b)$ where $p+b > C_i$, the values are uniformly set as 0.
-- `linear_diss_i.txt (i=1,2,...X)`: These are the linearized user dissatisfaction values for station $i$. The values are calculated based on the dissatisfaction tables and the method described in the paper. Each line inside the file represents one combination of $p$ and $b$ sorted in the order of $p$ fixed and $b$ varying. The values are separated by commas as $p$, $b$, $\alpha$, $\beta$, $\gamma$, and $s$, where $\alpha$, $\beta$, and $\gamma$ are the coefficients in the linearized function, and $s$ is the deviation of the linearized function from the original EUDF value.
-- `BCRFT_i.txt (i=1,2,...X)`: These are the beneficial over cost ratio function for trucks at station $i$. The values are calculated based on the method described in the paper. This is a table similar to the dissatisfaction table, except for the values are the beneficial over cost ratio for each combination of $p$ and $b$.
-- `BCRFR_i.txt (i=1,2,...X)`: These are the beneficial over cost ratio function for repairers at station $i$. The values are calculated based on the method described in the paper. This is a table similar to the dissatisfaction table, except for the values are the beneficial over cost ratio for each combination of $p$ and $b$.
+- `dissat_table_i.txt (i=1, 2, ..., X)`: These are the extended user dissatisfaction table calculated with a size of $C_i \times C_i$, where $C_i$ is capacity of station $i$. The row index $p$ is the number of usable bikes, and the column index $b$ is the number of broken bikes at station $i$. For table cells $(p,b)$ where $p+b > C_i$, the values are uniformly set as 0.
+- `linear_diss_i.txt (i=1, 2, ..., X)`: These are the linearized user dissatisfaction values for station $i$. The values are calculated based on the dissatisfaction tables and the method described in the paper. Each line inside the file represents one combination of $p$ and $b$ sorted in the order of $p$ fixed and $b$ varying. The values are separated by commas as $p$, $b$, $\alpha$, $\beta$, $\gamma$, and $s$, where $\alpha$, $\beta$, and $\gamma$ are the coefficients in the linearized function, and $s$ is the deviation of the linearized function from the original EUDF value.
+- `BCRFT_i.txt (i=1, 2, ..., X)`: These are the beneficial over cost ratio function for trucks at station $i$. The values are calculated based on the method described in the paper. This is a table similar to the dissatisfaction table, except for the values are the beneficial over cost ratio for each combination of $p$ and $b$.
+- `BCRFR_i.txt (i=1, 2, ..., X)`: These are the beneficial over cost ratio function for repairers at station $i$. The values are calculated based on the method described in the paper. This is a table similar to the dissatisfaction table, except for the values are the beneficial over cost ratio for each combination of $p$ and $b$.
 - `station_info_X.txt`: This file contains the information of stations inside an `X`-station BSS network. The first line is the header, and the following lines are the information of each station. The information includes the station id, the capacity of the station, the number of current usable bikes at the station, the number of target usable bikes at the station, and the number of current broken bikes at the station. The values are separated by `\t`. The station_id here is the station id in the original dataset, after the data is read, they are re-indexed to `1,2,...,X`.
 - `time_matrix_X.txt`: This file contains the time matrix between stations inside an `X`-station BSS network. The unit is seconds. Note depot is included in the station list, so the size of the matrix is $(X+1) \times (X+1)$. The values are separated by `\t`. Also note the matrix is asymmetric, i.e., the time from station $i$ to station $j$ is not necessarily the same as the time from station $j$ to station $i$.
 
@@ -125,10 +131,10 @@ python main.py --help
 | `-h`, `--help`   | Show this help message and exit                                           | N/A           | N/A        | N/A                                                                                                                                                                                                          |
 | `--n_station`      | Number of stations                                                        | 10            | Integer    | the number of stations should be set as the values that exist in the dataset directory                                                                                                                      |
 | `--n_truck`        | Number of trucks                                                          | 1             | Integer    | Integers $\ge$ 1                                                                                                                                                                                            |
-| `--n_repairer`    | Number of repairers                                                       | 1             | Integer    | Integers $\ge$ 1                                                                                                                                                                                            |
+| `--n_repairman`    | Number of repairmen                                                       | 1             | Integer    | Integers $\ge$ 1                                                                                                                                                                                            |
 | `--n_intervals`    | Number of intervals                                                       | 12            | Integer    | Integers $\ge$ 1                                                                                                                                                                                            |
 | `--truck_capacity` | Truck capacity                                                            | 25            | Integer    | Integers $\ge$ 1                                                                                                                                                                                            |
-| `--model_type`     | The type of the model                                                     | wr            | String     | `wr`: the model with repairers<br />`nr`: the model without repairers                                                                                                                                  |
+| `--model_type`     | The type of the model                                                     | wr            | String     | `wr`: the model with repairmen<br />`nr`: the model without repairmen                                                                                                                                  |
 | `--ratio_broken`   | Ratio of broken bikes calculated by:</br> $\frac{b}{q-p}$ if $q>p$ otherwise 0 | 0.5           | Float      | Real numbers $\ge$ 0                                                                                                                                                                                        |
 | `--time_interval`  | Time interval in seconds                                                  | 600           | Integer    | Integers $\ge$ 1                                                                                                                                                                                            |
 | `--t_load`         | Time to load a bike in seconds                                            | 60            | Integer    | Integers $\le$ `--time_inteval`                                                                                                                                                                              |
