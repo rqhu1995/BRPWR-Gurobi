@@ -1,6 +1,7 @@
 # Bike Repositioning Problem with Broken Bikes considering On-site Repairs
 
-<img width="379" alt="brpwr" src="https://github.com/user-attachments/assets/3296aa50-12e5-4e32-bc90-12ba5bb7db34">
+<img width="675" alt="image" src="https://github.com/user-attachments/assets/e8944330-73f0-487c-bb94-db8f715a79cb">
+
 
 
 ## Description
