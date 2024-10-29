@@ -25,7 +25,7 @@ This project contains codes for the paper "Repositioning in bike sharing systems
     - [Run the code](#run-the-code)
     - [Script execution](#script-execution)
   - [Check the solutions](#check-the-solutions)
-  
+
 
 ## Project structure
 
@@ -149,7 +149,7 @@ python main.py --help
 | `-e`, `--exp_label`       | Experiment label                                 | `default`    | String     | `default`, `repair_time`                                                                                                                                                                                                                                 |
 | `-t`, `--num_threads`     | Number of threads used, based on CPU capacity    | 4              | Integer    | Up to the number of available threads, typically `os.cpu_count()`                                                                                                                                                                                          |
 | `-heu`, `--heuristics`    | Time percentage that Gurobi spends on heuristics | 0.00           | Float      | Real numbers ≥ 0                                                                                                                                                                                                                                            |
-| `-m`, `--mode`            | Running mode of the optimization                 | `time_limit` | String     | `exhaustive`, `time_limit`: `exhaustive` mode runs until the optimal solution is found, <br />with heuristic and threads setting follows the default setting of Gurobi (maximum threads + 0.05 heuristic),, `time_limit` stops at a specified limit. |
+| `-m`, `--mode`            | Running mode of the optimization                 | `time_limit` | String     | `exhaustive`, `time_limit`: `exhaustive` mode runs until the optimal solution is found, <br />with heuristic and threads setting follows the default setting of Gurobi (maximum threads + 0.05 heuristic), and mode `time_limit` stops at a specified limit. |
 
 For example,
 
