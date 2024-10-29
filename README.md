@@ -1,4 +1,4 @@
-# Bike Repositioning Problem with Broken Bikes considering On-site Repairs
+# Bike Repositioning Problem with Broken Bikes considering On-site Repairs (Gurobi)
 
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/e8944330-73f0-487c-bb94-db8f715a79cb">
 
@@ -9,7 +9,7 @@
 This project contains codes for the paper "Repositioning in bike sharing systems with broken bikes considering on-site repairs". The detailed model and problem description can be found in the paper. 
 
 ##### ⚠️The current project solves the problem using Python with gurobipy for the <ins>EXACT</ins> solutions (**Solver**).
-##### ⚠️There is another project using Hybrid Genetic Search with Adaptive Diversity Control and Station Budget Constrained heuristic for efficiently obtaining the <ins>near-optimal</ins> solutions. The project can be found [here](https://github.com/rqhu1995/HGSADC-SBC).
+##### ⚠️There is another project using Hybrid Genetic Search with Adaptive Diversity Control and Station Budget Constrained heuristic for efficiently obtaining the <ins>near-optimal</ins> solutions. The project can be found [here](https://github.com/rqhu1995/BRPWR-HGSADC-SBC).
 
 ## Table of Contents
 
