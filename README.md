@@ -75,6 +75,7 @@ The folders `X_Y` provide data for different sizes (`X` stations). `Y` here is t
 
 - `X_Y` with `X = 6, 10, 15` and `Y = 1, 2, 3, 4, 5` correspond to the experiments on small scale instances in Section 5.2 of the paper.
 - `X_Y` with `X = 60, 90, 120, 200, 300, 400, 500` and `Y = 1` correspond to the experiments on large scale instances in Section 5.3 of the paper.
+_ `X_Y` with `X = 15` and `Y = 11, 12, ..., 20` correspond to the experiments on the repair time in Section 5.4 of the paper, where we use 11 to 20 to represent the broken bike inventory proportion w.r.t. the residual bike inventory from 10% to 100% with a step of 10%.
 
 ### Using the data
 
