@@ -13,20 +13,21 @@ This project contains codes for the paper "Repositioning in bike sharing systems
 ## Table of Contents
 
 - [Project structure](#project-structure)
-  - [Main structure](#main-structure)
-  - [Data Specification](#data-specification)
+- [Data description and usage](#data-description-and-usage)
+  - [Data naming and format description](#data-naming-and-format-description)
+  - [Data specification on the correspondence to experiments in the paper](#data-specification-on-the-correspondence-to-experiments-in-the-paper)
   - [Using the data](#using-the-data)
-- [Execution](#execution)
+- [Run the project](#run-the-project)
   - [Prerequisites](#prerequisites)
-  - [Run the project](#run-the-project)
+  - [Execution](#execution)
     - [Download the project](#download-the-project)
     - [Install the dependencies](#install-the-dependencies)
     - [Run the code](#run-the-code)
+    - [Script execution](#script-execution)
   - [Check the solutions](#check-the-solutions)
+  
 
 ## Project structure
-
-### Main structure
 
 The strucutre of the project is given as follows:
 
@@ -56,6 +57,8 @@ The strucutre of the project is given as follows:
 Folders `parameters`, `model`,  `utils` and `main.py` form the main project.
 
 The external resources include the dataset and solutions are put in the folder `resources`. Additionally, the folder `scripts` contains shell scripts that can run batch experiments for testing without having to input the commands one by one.
+
+## Data description and usage
 
 ### Data naming and format description
 
