@@ -100,8 +100,8 @@ def amendment(
             while i == 0 and j == 0 and (idx != len(truck_visits[k]) - 1):
                 idx += 1
                 for operation_type in operation_types:
-                    current_val = int(truck_visits[k][idx][operation_type])
-                    added_val = int(item[operation_type])
+                    current_val = truck_visits[k][idx][operation_type]
+                    added_val = item[operation_type]
                     assert isinstance(current_val, int)
                     assert isinstance(added_val, int)
                     truck_visits[k][idx][operation_type] = current_val + added_val
