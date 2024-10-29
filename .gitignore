@@ -2,3 +2,4 @@ solutions/
 main-new.py
 __pycache__/
 logs/
+.vscode/
