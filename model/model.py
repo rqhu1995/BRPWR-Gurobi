@@ -2,21 +2,17 @@ from pathlib import Path
 import platform
 import time
 import gurobipy as gp
-from gurobipy import GRB
 from .callback import soft_stop
 from parameters.dataloader import (
     has_repairer,
-    ratio_broken,
     t_repair,
-    is_prop,
     n_intervals,
     mode,
+    exp_label,
     n_threads,
     heuristics,
-    exp_label,
     n_repairer,
     n_truck,
-    log_on,
 )
 from .variables import (
     addAuxiliaryVars,
@@ -69,20 +65,17 @@ class Solver:
                         self.xt[i, j, t, k].start = 0  # type: ignore
 
     def optimize(self):
-        self.m.setParam("Threads", n_threads)
-        self.m.setParam("MIPGap", 1e-5)
-        self.m.setParam("Heuristics", heuristics)
         self.m.setParam("SolutionLimit", 1e9)
-        if log_on:
-            self.m.setParam(
-                "LogFile",
-                f"resources/logs/{n_station}_t{n_truck}_r{n_repairer}_T{600*n_intervals/3600}.log",
-            )
+        self.m.setParam("LogFile", f"resources/logs/{n_station}_t{n_truck}_r{n_repairer}_T{600*n_intervals/3600}.log")
+        self.m.setParam("MIPGap", 1e-5)
+        self.m.setParam("Threads", n_threads)
+        self.m.setParam("Heuristics", heuristics)
         self.setMIPStart()
         self.m._start_time = time.time()
-        if mode == "stop_at_feasible":
+        if mode == "exhaustive":
             self.m.optimize(callback=soft_stop)
         else:
+            self.m.setParam("timeLimit", 7200)
             self.m.optimize()
         # record the solution time
         self.sol_time = self.m.Runtime
@@ -105,12 +98,9 @@ class Solver:
 
         time_dir = f"resources{sep}solutions{sep}{time.strftime('%Y-%m-%d')}{sep}{datafilename}"
         Path(time_dir).mkdir(parents=True, exist_ok=True)
-        if not is_prop:
-            self.sol_path = f"{time_dir}{sep}{datafilename}_{current_time}.sol"
-        else:
-            self.sol_path = (
-                f"{time_dir}{sep}{datafilename}_{current_time}_r{ratio_broken}.sol"
-            )
+
+        self.sol_path = f"{time_dir}{sep}{datafilename}_{current_time}.sol"
+
         if exp_label == "repair_time":
             self.sol_path = f"{time_dir}{sep}{datafilename}_rt{t_repair}.sol"
         if self.m.SolCount > 0:

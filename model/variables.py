@@ -70,7 +70,7 @@ def addAuxiliaryVars(solver):
         solver.aux_stop_rpm = solver.m.addVars(
             T, R, vtype=GRB.BINARY, name="aux_stop_rpm"
         )
-        solver.operating_time_repairman = solver.m.addVars(
+        solver.operating_time_repairer = solver.m.addVars(
             R, vtype=GRB.CONTINUOUS, name="operating_time_rpm"
         )
     solver.operating_time_truck = solver.m.addVars(

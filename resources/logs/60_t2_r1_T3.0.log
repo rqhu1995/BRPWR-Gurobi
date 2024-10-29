@@ -1,0 +1,29 @@
+
+Gurobi 11.0.3 (linux64) logging started Tue Oct 29 15:13:51 2024
+
+Set parameter LogFile to value "resources/logs/60_t2_r1_T3.0.log"
+Set parameter MIPGap to value 1e-05
+Set parameter Threads to value 4
+Set parameter Heuristics to value 0
+Set parameter TimeLimit to value 7200
+Gurobi Optimizer version 11.0.3 build v11.0.3rc0 (linux64 - "Ubuntu 22.04.3 LTS")
+
+CPU model: 12th Gen Intel(R) Core(TM) i9-12900, instruction set [SSE2|AVX|AVX2]
+Thread count: 12 physical cores, 24 logical processors, using up to 4 threads
+
+Optimize a model with 622202 rows, 615108 columns and 6760969 nonzeros
+Model fingerprint: 0x64e53932
+Variable types: 404235 continuous, 210873 integer (200988 binary)
+Coefficient statistics:
+  Matrix range     [4e-06, 1e+04]
+  Objective range  [1e-08, 2e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [4e-04, 1e+04]
+
+User MIP start produced solution with objective 3581.8 (0.68s)
+Loaded user MIP start with objective 3581.8
+
+Presolve removed 474305 rows and 207311 columns (presolve time = 5s) ...
+Presolve removed 476770 rows and 226779 columns (presolve time = 10s) ...
+Presolve removed 476770 rows and 226780 columns (presolve time = 15s) ...
+Presolve removed 476770 rows and 226780 columns (presolve time = 20s) ...

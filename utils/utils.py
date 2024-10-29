@@ -1,9 +1,6 @@
 import json
 from typing import Union, List, Dict, Tuple
-from parameters.dataloader import n_truck, end_period, n_station, n_repairer, inst_no
-import numpy as np
-from gurobipy import GRB, Model as gp
-import time
+from parameters.dataloader import n_truck, n_repairer
 
 
 def parse_sol_file(filename):
@@ -24,27 +21,23 @@ def parse_sol_file(filename):
     objective_value = float(lines[0].split("=")[1])
 
     truck_visits = [[] for _ in range(n_truck)]
-    repairman_visits = [[] for _ in range(n_repairer)]
+    repairer_visits = [[] for _ in range(n_repairer)]
 
-    truck_visits, repairman_visits = routing_extract(
-        lines, truck_visits, repairman_visits
+    truck_visits, repairer_visits = routing_extract(
+        lines, truck_visits, repairer_visits
     )
 
-    operation_extract(lines, truck_visits, repairman_visits)
-    truck_visits, repairman_visits = amendment(truck_visits, repairman_visits)
+    operation_extract(lines, truck_visits, repairer_visits)
+    truck_visits, repairer_visits = amendment(truck_visits, repairer_visits)
 
     dissat = dissat_extract(lines)
 
     emission = emission_extract(lines)
 
-    # average_load, travel_dist, broken_carried = load_and_distance(truck_visits)
-
-    # no_of_stations = no_of_stations_visited(truck_visits)
-
     data = {
         "objective_value": objective_value,
         "truck_visits": truck_visits,
-        "repairman_visits": repairman_visits,
+        "repairer_visits": repairer_visits,
         "dissat": dissat,
         "emission": emission,
         "cpu_time": cpu_time,
@@ -59,7 +52,7 @@ def parse_sol_file(filename):
 #  truck_visits = [[{"x":y, "z": k, ...}, {"x":y, "z": k, ...}, ...],[{"x":y, "z": k, ...}, {"x":y, "z": k, ...}, ...],...,[{"x":y, "z": k, ...}, {"x":y, "z": k, ...}, ...]]
 def amendment(
     truck_visits: List[List[Dict[str, Union[int, Tuple[int, int, int]]]]],
-    repairman_visits: List[List[Dict[str, Union[int, Tuple[int, int, int]]]]],
+    repairer_visits: List[List[Dict[str, Union[int, Tuple[int, int, int]]]]],
 ):
     operation_types = [
         "reb_amount_usable+",
@@ -127,36 +120,36 @@ def amendment(
             idx += 1
     truck_visits = new_truck_visits
 
-    new_repairman_visits = [[] for _ in range(n_repairer)]
+    new_repairer_visits = [[] for _ in range(n_repairer)]
 
     for m in range(n_repairer):
         idx = 0
-        while idx < len(repairman_visits[m]):
-            item = repairman_visits[m][idx]
+        while idx < len(repairer_visits[m]):
+            item = repairer_visits[m][idx]
             assert isinstance(item["ijt"], tuple), f"ijt is not a tuple: {item['ijt']}"
             i, j, t = item["ijt"]
             while (
                 i == j
-                and (idx != len(repairman_visits[m]) - 1)
+                and (idx != len(repairer_visits[m]) - 1)
                 and not (i == 0 and j == 0)
             ):
                 assert isinstance(item["repaired"], int | float)
-                added_repaired = repairman_visits[m][idx + 1]["repaired"]
+                added_repaired = repairer_visits[m][idx + 1]["repaired"]
                 current_repaired = item["repaired"]
                 assert isinstance(added_repaired, int | float)
                 assert isinstance(current_repaired, int | float)
-                repairman_visits[m][idx + 1]["repaired"] = int(current_repaired) + int(
+                repairer_visits[m][idx + 1]["repaired"] = int(current_repaired) + int(
                     added_repaired
                 )
                 idx += 1
-                item = repairman_visits[m][idx]
+                item = repairer_visits[m][idx]
                 assert isinstance(
                     item["ijt"], tuple
                 ), f"ijt is not a tuple: {item['ijt']}"
                 i, j, t = item["ijt"]
-            new_repairman_visits[m].append(item)
+            new_repairer_visits[m].append(item)
             idx += 1
-    repairman_visits = new_repairman_visits
+    repairer_visits = new_repairer_visits
 
     for truck_visit in truck_visits:
         for item in truck_visit:
@@ -164,14 +157,14 @@ def amendment(
                 if item[operation_type] == 0:
                     del item[operation_type]
 
-    for repairman_visit in repairman_visits:
-        for item in repairman_visit:
+    for repairer_visit in repairer_visits:
+        for item in repairer_visit:
             if item["repaired"] == 0:
                 del item["repaired"]
-    return truck_visits, repairman_visits
+    return truck_visits, repairer_visits
 
 
-def operation_extract(lines, truck_visits, repairman_visits):
+def operation_extract(lines, truck_visits, repairer_visits):
     operation_types = [
         "reb_amount_usable+",
         "reb_amount_usable-",
@@ -192,7 +185,7 @@ def operation_extract(lines, truck_visits, repairman_visits):
 
         if variable.startswith("repaired_amount_man"):
             i, t, m = map(int, variable[20:-1].split(","))
-            for item in repairman_visits[m]:
+            for item in repairer_visits[m]:
                 if (
                     item["ijt"][0] == i
                     and item["ijt"][2] == t
@@ -201,7 +194,7 @@ def operation_extract(lines, truck_visits, repairman_visits):
                     item["repaired"] += value
 
 
-def routing_extract(lines, truck_visits, repairman_visits):
+def routing_extract(lines, truck_visits, repairer_visits):
     for line in lines[1:]:
         variable, value = line.split()
         value = float(value)
@@ -220,15 +213,15 @@ def routing_extract(lines, truck_visits, repairman_visits):
                 )
             elif variable.startswith("visit_man"):
                 i, j, t, m = map(int, variable[10:-1].split(","))
-                repairman_visits[m].append({"ijt": (i, j, t), "repaired": 0})
+                repairer_visits[m].append({"ijt": (i, j, t), "repaired": 0})
     # for every list inside truck_visits list, sort the element based on the value of t in the field "ijt"
     for i, truck_visit in enumerate(truck_visits):
         truck_visits[i] = sorted(truck_visit, key=lambda item: item["ijt"][2])
 
-    for i, repairman_visit in enumerate(repairman_visits):
-        repairman_visits[i] = sorted(repairman_visit, key=lambda item: item["ijt"][2])
+    for i, repairer_visit in enumerate(repairer_visits):
+        repairer_visits[i] = sorted(repairer_visit, key=lambda item: item["ijt"][2])
 
-    return truck_visits, repairman_visits
+    return truck_visits, repairer_visits
 
 
 def dissat_extract(lines):
@@ -249,45 +242,3 @@ def emission_extract(lines):
         if variable.startswith("emission"):
             emission += value
     return emission
-
-
-def load_and_distance(truck_visits):
-    time_matrix = np.loadtxt(
-        f"/home/runqiu/brpwr-refactor/resources/dataset/solver/{inst_no}/time_matrix_6.txt",
-        dtype=int,
-    )
-    dist_matrix = time_matrix * 7 / 1000
-    truck_inv = 0
-    average_load = 0
-    total_dist = 0.0
-    broken_carried = 0
-    keys = [
-        "reb_amount_usable+",
-        "reb_amount_usable-",
-        "reb_amount_broken+",
-        "reb_amount_broken-",
-    ]
-    for seg in truck_visits:
-        i, j = seg["ijt"][0], seg["ijt"][1]
-
-        for key in keys:
-            if key in seg:
-                # Adjust truck_inv based on whether the key ends with '+' or '-'
-                adjustment = seg[key] if key.endswith("+") else -seg[key]
-                truck_inv -= adjustment
-
-                if key == "reb_amount_broken-":
-                    broken_carried += seg[key]
-
-        average_load += truck_inv * dist_matrix[i][j]
-        total_dist += dist_matrix[i][j]
-
-    return (average_load / total_dist), total_dist, broken_carried
-
-
-def no_of_stations_visited(truck_visits):
-    no = len(truck_visits) - 1
-    final_seg = truck_visits[-1]
-    if final_seg["ijt"][0] == 0 and final_seg["ijt"][1] == 0:
-        no -= 1
-    return no

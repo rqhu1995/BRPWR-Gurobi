@@ -14,20 +14,20 @@ def addObjective(solver):
             + 0.00000001
             * (
                 gp.quicksum(solver.operating_time_truck[k] for k in K)
-                + gp.quicksum(
-                    solver.xt[i, j, t, k] * trip_time[i, j]
-                    for i in S0
-                    for j in S0
-                    for t in T
-                    for k in K
-                )
-                + gp.quicksum(solver.operating_time_repairman[m] for m in R)
+                + gp.quicksum(solver.operating_time_repairer[m] for m in R)
                 + gp.quicksum(
                     solver.xr[i, j, t, m] * trip_time_man[i, j]
                     for i in S0
                     for j in S0
                     for t in T
                     for m in R
+                )
+                + gp.quicksum(
+                    solver.xt[i, j, t, k] * trip_time[i, j]
+                    for i in S0
+                    for j in S0
+                    for t in T
+                    for k in K
                 )
             ),
             gp.GRB.MINIMIZE,

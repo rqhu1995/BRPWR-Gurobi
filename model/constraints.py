@@ -520,7 +520,7 @@ def addTimeConstraints(solver):
         )
     )
     if has_repairer:
-        # upper bound repairman
+        # upper bound repairer
         solver.m.addConstrs(
             constrs=(
                 solver.upper_bound_man[w, m]
@@ -542,7 +542,7 @@ def addTimeConstraints(solver):
             )
         )
 
-        # lower bound repairman
+        # lower bound repairer
         solver.m.addConstrs(
             constrs=(
                 solver.lower_bound_man[w, m]
@@ -733,7 +733,7 @@ def addAuxiliaryConstraints(solver):
     if has_repairer:
         solver.m.addConstrs(
             constrs=(
-                solver.operating_time_repairman[m]
+                solver.operating_time_repairer[m]
                 == gp.quicksum(
                     (solver.g[i, t, m]) * dataloader.t_repair for i in S0 for t in T
                 )

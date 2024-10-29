@@ -1,19 +1,14 @@
-# use argparse to set values for n_station, n_truck, n_repairman, n_intervals, end_period
+# use argparse to set values for n_station, n_truck, n_repairer, n_intervals, end_period
 
 import argparse
 import os
 
-
-class CustomFormatter(argparse.ArgumentDefaultsHelpFormatter, argparse.HelpFormatter):
-    def __init__(self, prog):
-        super().__init__(prog, max_help_position=80)
-
+formatter = lambda prog: argparse.HelpFormatter(prog, max_help_position=80)
 
 parser = argparse.ArgumentParser(
-    formatter_class=CustomFormatter,
+    formatter_class=formatter,
     description="Set values for basic parameters of the experiment",
 )
-
 parser.add_argument("-S", "--n_station", type=int, default=6, help="number of stations")
 parser.add_argument("-K", "--n_truck", type=int, default=1, help="number of trucks")
 parser.add_argument(
@@ -40,29 +35,16 @@ parser.add_argument(
     help="whether to include repairers",
     choices=[True, False],
 )
-parser.add_argument(
-    "-p",
-    "--is_prop",
-    type=lambda x: x == "True",
-    default=False,
-    help="the broken bike inventories is set proportionally to the deviation from the target usable bike inventory",
-    choices=[True, False],
-)
-parser.add_argument(
-    "-rb",
-    "--ratio_broken",
-    type=float,
-    default=0.5,
-    help="the proportion set for the number of broken bikes",
-)
+
 parser.add_argument("-i", "--inst_no", type=int, default=1, help="instance number")
+
 parser.add_argument(
     "-e",
     "--exp_label",
     type=str,
     default="default",
     help="experiment label",
-    choices=["default", "bb_prop", "repair_time"],
+    choices=["default", "repair_time"],
 )
 parser.add_argument(
     "-t",
@@ -81,23 +63,13 @@ parser.add_argument(
 )
 
 parser.add_argument(
-    "-l",
-    "--log_on",
-    type=lambda x: x == "True",
-    default=True,
-    help="whether to log the optimization process",
-    choices=[True, False],
-)
-
-parser.add_argument(
     "-m",
     "--mode",
     type=str,
-    default="optimal",
-    choices=["optimal", "stop_at_feasible"],
-    help="the running mode of the optimization. Optimal mode will run until the optimal solution is found, \
-        while stop_at_feasible will try to find the optimal at the first two hours, then continue running \
-        and stop at the first feasible solution found.",
+    default="time_limit",
+    choices=["exhaustive", "time_limit"],
+    help="the running mode of the optimization. Exhaustive mode will run until the optimal solution is found, \
+        while time_limit mode will stop at the time limit and report the best solution found",
 )
 
 args = parser.parse_args()

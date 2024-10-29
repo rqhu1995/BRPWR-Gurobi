@@ -6,8 +6,6 @@ def soft_stop(model, where):
     # read from the heuristic solutions, if the current best solution is better than the one from the heuristic, stop the optimization
     if where == GRB.Callback.MIP or where == GRB.Callback.PRESOLVE:
         runtime = time.time() - model._start_time
-        print(f"Runtime: {runtime}")
-        print(f"Current Phase is: {where}")
         try:
             best_int = model.cbGet(GRB.Callback.MIP_OBJBST)
             best_bound = model.cbGet(GRB.Callback.MIP_OBJBND)
@@ -15,10 +13,6 @@ def soft_stop(model, where):
             best_int = None
             best_bound = None
 
-        # # If the runtime exceeds 2 hours and at least one solution has been found, terminate the optimization process
-        # if runtime >= 7200 and best_int is not None:
-        #     print(f"Runtime: {runtime}, Best integer: {best_int}")
-        #     model.terminate()  # terminate the current optimization process
         # record the best integer solution every day (86400 seconds), write it to the log file
         if (
             runtime >= 7200

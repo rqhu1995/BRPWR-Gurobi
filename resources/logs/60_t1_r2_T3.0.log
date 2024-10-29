@@ -1,0 +1,54 @@
+
+Gurobi 11.0.3 (linux64) logging started Tue Oct 29 15:13:46 2024
+
+Set parameter LogFile to value "resources/logs/60_t1_r2_T3.0.log"
+Set parameter MIPGap to value 1e-05
+Set parameter Threads to value 4
+Set parameter Heuristics to value 0
+Set parameter TimeLimit to value 7200
+Gurobi Optimizer version 11.0.3 build v11.0.3rc0 (linux64 - "Ubuntu 22.04.3 LTS")
+
+CPU model: 12th Gen Intel(R) Core(TM) i9-12900, instruction set [SSE2|AVX|AVX2]
+Thread count: 12 physical cores, 24 logical processors, using up to 4 threads
+
+Optimize a model with 337776 rows, 410880 columns and 5638066 nonzeros
+Model fingerprint: 0x0b1e9a24
+Variable types: 203301 continuous, 207579 integer (200988 binary)
+Coefficient statistics:
+  Matrix range     [4e-06, 1e+04]
+  Objective range  [1e-08, 2e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [4e-04, 1e+04]
+
+User MIP start produced solution with objective 3562.07 (0.55s)
+User MIP start produced solution with objective 3511.37 (0.57s)
+User MIP start produced solution with objective 3507.2 (0.61s)
+Loaded user MIP start with objective 3507.2
+
+Presolve removed 251024 rows and 134630 columns (presolve time = 5s) ...
+Presolve removed 251039 rows and 134640 columns (presolve time = 10s) ...
+Presolve removed 251039 rows and 134640 columns (presolve time = 15s) ...
+Presolve removed 250857 rows and 134458 columns
+Presolve time: 18.07s
+Presolved: 86919 rows, 276422 columns, 2082253 nonzeros
+Variable types: 109311 continuous, 167111 integer (161791 binary)
+Deterministic concurrent LP optimizer: primal simplex, dual simplex, and barrier
+Showing barrier log only...
+
+Root barrier log...
+
+Ordering time: 2.16s
+
+Barrier statistics:
+ Dense cols : 72
+ AA' NZ     : 1.785e+06
+ Factor NZ  : 1.095e+07 (roughly 240 MB of memory)
+ Factor Ops : 1.120e+10 (less than 1 second per iteration)
+ Threads    : 2
+
+                  Objective                Residual
+Iter       Primal          Dual         Primal    Dual     Compl     Time
+   0   2.23969927e+07 -2.38665603e+07  3.05e+08 8.67e-02  1.74e+05    24s
+   1   1.94297274e+07 -1.92288263e+07  1.84e+08 5.06e+00  1.06e+05    24s
+   2   1.65000599e+07 -1.47422243e+07  1.51e+08 2.06e+00  8.71e+04    25s
+   3   2.66789732e+06 -1.29967142e+07  2.61e+07 1.09e+00  1.56e+04    25s
