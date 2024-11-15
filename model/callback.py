@@ -3,7 +3,6 @@ import time
 
 
 def soft_stop(model, where):
-    # read from the heuristic solutions, if the current best solution is better than the one from the heuristic, stop the optimization
     if where == GRB.Callback.MIP or where == GRB.Callback.PRESOLVE:
         runtime = time.time() - model._start_time
         try:
