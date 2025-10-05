@@ -184,7 +184,7 @@ Note that for large instances, we utilized `GNU screen` to attach the process in
 
 Solutions will be saved in the folder `resources/solutions`. The first file for a solution is the gurobi solution file ending with `.sol`. The second file is the postprocessed results with routes and numerical information in json format. The timestamp information is also included in the file name to differentiate the solutions. Solutions under the same date will be put under the same folder.
 
-# Citation & Acknowledgement
+## Citation & Acknowledgement
 
 Development and further research based on this repository are welcomed. Please cite the research properly where applicable. The **BibTeX** info is provided as follows:
 
