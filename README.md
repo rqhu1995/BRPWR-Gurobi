@@ -4,7 +4,7 @@
 
 ## Description
 
-This project contains codes for the paper "Repositioning in bike sharing systems with broken bikes considering on-site repairs". The detailed model and problem description can be found in the paper.
+This project contains codes for the paper [Repositioning in bike sharing systems with broken bikes considering on-site repairs](https://doi.org/10.1016/j.tre.2025.104155). The detailed model and problem description can be found in the paper.
 
 Note: The current project solves the problem using Python with gurobipy for the EXACT solutions (**Solver**). There is another project using Hybrid Genetic Search with Adaptive Diversity Control and Station Budget Constrained heuristic for efficiently obtaining the NEAR-OPTIMAL solutions. The project can be found [here](https://github.com/rqhu1995/BRPWR-HGSADC-SBC).
 
