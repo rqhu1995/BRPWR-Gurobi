@@ -183,3 +183,22 @@ Note that for large instances, we utilized `GNU screen` to attach the process in
 ### Check the solutions
 
 Solutions will be saved in the folder `resources/solutions`. The first file for a solution is the gurobi solution file ending with `.sol`. The second file is the postprocessed results with routes and numerical information in json format. The timestamp information is also included in the file name to differentiate the solutions. Solutions under the same date will be put under the same folder.
+
+# Citation & Acknowledgement
+
+Development and further research based on this repository are welcomed. Please cite the research properly where applicable. The **BibTeX** info is provided as follows:
+
+```latex
+@article{HU2025104155,
+title = {Repositioning in bike sharing systems with broken bikes considering on-site repairs},
+journal = {Transportation Research Part E: Logistics and Transportation Review},
+volume = {201},
+pages = {104155},
+year = {2025},
+issn = {1366-5545},
+doi = {https://doi.org/10.1016/j.tre.2025.104155},
+url = {https://www.sciencedirect.com/science/article/pii/S1366554525001966},
+author = {Runqiu Hu and W.Y. Szeto and Sin C. Ho},
+keywords = {Bike repositioning problem, Broken bike repositioning, On-site repair routing, Time-indexed formulation, Station budget constrained heuristic},
+}
+```
